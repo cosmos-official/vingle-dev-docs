@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { sidebar } from './src/utils/generateSidebar';
 import remarkMarkmap from 'remark-markmap';
+import rehypeMermaid from 'rehype-mermaid';
 
 const DOCUMENT_URL = 'https://docs.vingle.kr';
 const DOCUMENT_TITLE = 'vingle-backend dev docs';
@@ -12,12 +13,17 @@ const TARGET_REPOSITORY = 'vingle-backend';
 export default defineConfig({
 	site: DOCUMENT_URL,
 	markdown: {
+		syntaxHighlight: {
+			type: 'shiki',
+			excludeLangs: ['mermaid', 'math'],
+		},
 		remarkPlugins: [
 			[remarkMarkmap,
 				{
 					darkThemeSelector: () => document.documentElement.matches('.dark') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
 				}]
-		]
+		],
+		rehypePlugins: [rehypeMermaid],
 	},
 	integrations: [
 		starlight({
@@ -35,7 +41,7 @@ export default defineConfig({
 			components: {
 				PageTitle: './src/layouts/PageTitleOverride.astro'
 			},
-			customCss: ['./src/styles/markmap.css']
+			customCss: ['./src/styles/markmap.css', './src/styles/mermaid.css']
 		}),
 	],
 });
