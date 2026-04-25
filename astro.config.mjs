@@ -23,7 +23,11 @@ export default defineConfig({
 					darkThemeSelector: () => document.documentElement.matches('.dark') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
 				}]
 		],
-		rehypePlugins: [rehypeMermaid],
+		rehypePlugins: [[rehypeMermaid, {
+			mermaidConfig: {
+				htmlLabels: false
+			},
+		}]],
 	},
 	integrations: [
 		starlight({
